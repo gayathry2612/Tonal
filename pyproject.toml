@@ -1,0 +1,32 @@
+[build-system]
+requires      = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.backends.legacy:build"
+
+[project]
+name            = "tonal"
+version         = "1.0.0"
+description     = "A free, portable, cross-platform desktop music player"
+readme          = "README.md"
+license         = { text = "MIT" }
+requires-python = ">=3.12"
+keywords        = ["music", "player", "audio", "mp3", "flac"]
+
+dependencies = [
+    "PySide6>=6.6.0",
+    "mutagen>=1.47.0",
+    "Pillow>=10.0.0",
+]
+
+[project.scripts]
+tonal = "tonal.main:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+"tonal" = ["../assets/**/*"]
+
+[tool.pytest.ini_options]
+# Add src/ to sys.path so 'tonal' is importable without installing the package
+pythonpath = ["src"]
+testpaths  = ["tests"]

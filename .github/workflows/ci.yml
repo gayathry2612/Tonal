@@ -1,0 +1,40 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      # PySide6 needs libGL and libGLib on headless Linux runners.
+      # QCoreApplication (used in tests) does NOT need a display server.
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends \
+            libgl1 \
+            libglib2.0-0 \
+            libegl1
+
+      - name: Install Python dependencies
+        run: |
+          pip install --upgrade pip setuptools
+          pip install -r requirements.txt
+          pip install pytest
+
+      - name: Run tests
+        # pythonpath = ["src"] in pyproject.toml makes 'tonal' importable
+        # without a full package install, so no pip install -e . needed.
+        run: python -m pytest tests/ -v --tb=short
