@@ -6,15 +6,25 @@
 
 ## Why does Tonal exist in a world with Spotify?
 
-Spotify is incredible. Thirty million songs in your pocket, curated playlists, collaborative listening — it's genuinely magic.
+Spotify is incredible!
+Thirty million songs in your pocket, curated playlists, collaborative listening — it's genuinely magic.
 
-But it's also a subscription. A dependency. A server farm in another country deciding whether your favourite deep-cut album stays licensed this month. A company that can, and does, remove music without warning. An app that requires an account just to press play.
+But it's also a subscription. A dependency on internet. 
+A server farm in another country deciding whether your favourite deep-cut album stays licensed this month. 
+A company that can, and does, remove music without warning. An app that requires an account just to press play.
 
-And then there's *your* music. The stuff that will never be on Spotify. The bootleg recording of a gig you went to in 2009. The lossless FLAC rips you spent years building. The MP3s you bought on Bandcamp from artists who actually get paid when you buy directly. The playlist you made for a person who mattered. Voice memos. Field recordings. Your dad's record collection, digitised.
+And then there's *your* music. The stuff that may never be on Spotify. 
+The bootleg recording of a gig you went to in 2009. The lossless FLAC rips you spent years building. 
+The MP3s you bought on Bandcamp from artists who actually get paid when you buy directly. 
+The playlist you made for a person who mattered. Voice memos. Field recordings. 
+Your dad's record collection, digitised that stays on a USB stick. 
 
-**That music deserves a great player. That's Tonal.**
+**That music deserves a humble music player. That's Tonal.**
 
-No account. No ads. No algorithm nudging you toward sponsored content. No phone home. No internet required — ever. Just a beautiful, fast, native app that plays your files and gets out of the way.
+No account. No ads. No algorithm nudging you toward sponsored content. 
+No phone home. No internet required — ever. 
+Just a beautiful, fast, customisable, native python app that plays your files and gets out of the way.
+If you wish to customise this, just fork this repo and play with your favorite AI to add features. 
 
 ---
 
@@ -37,13 +47,13 @@ No account. No ads. No algorithm nudging you toward sponsored content. No phone 
 
 ```bash
 git clone <this-repo>
-cd "Music player"
+cd "Tonal"
 
 python3 -m venv .venv
 source .venv/bin/activate        # Windows: .venv\Scripts\activate
 
 pip install -r requirements.txt
-python -m tonal
+python -m src/tonal
 ```
 
 Requires **Python 3.12+**.
@@ -142,9 +152,11 @@ Music player/
 
 Tonal is a pure product of **vibe coding with Claude**.
 
-No boilerplate was copy-pasted from Stack Overflow. No tutorials were followed. The entire codebase — architecture, Qt signal wiring, audio engine, space animations, installer spec, test suite, CI pipeline — was grown in conversation, one idea at a time, between a person who knew what they wanted and an AI that knew how to build it.
+No boilerplate was copy-pasted from Stack Overflow. No tutorials were followed. :D  
+The entire codebase — architecture, Qt signal wiring, audio engine, space animations, installer spec, test suite, CI pipeline — was grown in conversation, one idea at a time, between a person who knew what they wanted and an AI that knew how to build it.
 
-That's the whole point. You don't need to know PySide6. You don't need to know PyInstaller. You don't need to have written a music player before. You just need a clear idea of what you want to exist in the world, and the willingness to iterate.
+That's the whole point. You don't need to know PySide6. 
+You don't need to know PyInstaller. You don't need to have written a music player before. You just need a clear idea of what you want to exist in the world, and the willingness to iterate.
 
 **Tonal is proof that the barrier to building real, native, polished desktop software is now just: having something worth building.**
 
@@ -152,4 +164,4 @@ That's the whole point. You don't need to know PySide6. You don't need to know P
 
 ## License
 
-MIT — free to use, modify, and distribute.
+MIT — free to use, modify, and distribute. Feel free to fork, test, dismantle and just play ! :D 
