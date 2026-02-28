@@ -38,3 +38,4 @@ htmlcov/
 # Build artefacts
 dist/
 build/
+assets/tonal.iconset/
