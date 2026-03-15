@@ -15,6 +15,10 @@ dependencies = [
     "PySide6>=6.6.0",
     "mutagen>=1.47.0",
     "Pillow>=10.0.0",
+    # Streaming integrations (optional — panels degrade gracefully if absent)
+    "spotipy>=2.23.0",      # Spotify Web API client + OAuth
+    "ytmusicapi>=1.6.0",    # YouTube Music search
+    "yt-dlp>=2024.1.0",     # YouTube audio stream extraction
 ]
 
 [project.scripts]

@@ -27,6 +27,9 @@ def main() -> None:
     app.setOrganizationName("Tonal")
     app.setApplicationVersion("1.0.0")
 
+    # Keep the process alive when the window is hidden to the system tray
+    app.setQuitOnLastWindowClosed(False)
+
     # Set app icon if bundled asset exists
     _set_app_icon(app)
 

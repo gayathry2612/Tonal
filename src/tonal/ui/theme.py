@@ -297,12 +297,102 @@ QLabel#statusLabel {{
     padding: 2px 6px;
 }}
 
+/* ── Tab widget ──────────────────────────────────────────────────────*/
+QTabWidget#mainTabs {{
+    background-color: transparent;
+}}
+QTabWidget#mainTabs::pane {{
+    background-color: transparent;
+    border: none;
+}}
+QTabWidget#mainTabs > QTabBar {{
+    background-color: {BG_DEEP};
+}}
+QTabBar::tab {{
+    background-color: transparent;
+    color: {TEXT_MUTED};
+    padding: 9px 20px;
+    font-size: 13px;
+    font-weight: 500;
+    border: none;
+    border-bottom: 2px solid transparent;
+    min-width: 120px;
+}}
+QTabBar::tab:hover {{
+    color: {TEXT_SECONDARY};
+    background-color: rgba(45, 45, 78, 120);
+}}
+QTabBar::tab:selected {{
+    color: {ACCENT};
+    border-bottom: 2px solid {ACCENT};
+    background-color: rgba(124, 106, 247, 15);
+}}
+QTabBar::tab:!selected {{
+    margin-top: 2px;
+}}
+/* Inner selector tabs (song picker in alarm dialog) */
+QTabWidget#selectorTabs::pane {{
+    background-color: rgba(22, 33, 62, 200);
+    border: 1px solid {BG_BORDER};
+    border-radius: 6px;
+}}
+QTabWidget#selectorTabs > QTabBar::tab {{
+    padding: 6px 14px;
+    font-size: 12px;
+    min-width: 80px;
+}}
+
 /* ── Status bar ──────────────────────────────────────────────────────*/
 QStatusBar {{
     background-color: {BG_DEEP};
     color: {TEXT_MUTED};
     font-size: 11px;
     border-top: 1px solid {BG_BORDER};
+}}
+
+/* ── Spin / date-time editors ────────────────────────────────────────*/
+QTimeEdit, QDateTimeEdit, QSpinBox, QDoubleSpinBox {{
+    background-color: {BG_HOVER};
+    border: 1px solid {BG_BORDER};
+    border-radius: 6px;
+    padding: 4px 8px;
+    color: {TEXT_PRIMARY};
+    font-size: 13px;
+}}
+QTimeEdit:focus, QDateTimeEdit:focus {{
+    border-color: {ACCENT};
+}}
+QTimeEdit::up-button, QTimeEdit::down-button {{
+    width: 0;
+    height: 0;
+}}
+
+/* ── Checkbox ────────────────────────────────────────────────────────*/
+QCheckBox {{
+    color: {TEXT_SECONDARY};
+    spacing: 6px;
+}}
+QCheckBox::indicator {{
+    width: 16px;
+    height: 16px;
+    border: 1px solid {BG_BORDER};
+    border-radius: 3px;
+    background-color: {BG_HOVER};
+}}
+QCheckBox::indicator:checked {{
+    background-color: {ACCENT};
+    border-color: {ACCENT};
+}}
+
+/* ── Progress bar ────────────────────────────────────────────────────*/
+QProgressBar {{
+    background-color: {BG_HOVER};
+    border-radius: 2px;
+    border: none;
+}}
+QProgressBar::chunk {{
+    background-color: {ACCENT};
+    border-radius: 2px;
 }}
 
 /* ── Tooltip ─────────────────────────────────────────────────────────*/

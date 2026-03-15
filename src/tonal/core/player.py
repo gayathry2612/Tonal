@@ -31,12 +31,7 @@ class Player(QObject):
 
         self._media   = QMediaPlayer(self)
         self._volume  = 0.7
-
-        # Explicitly use the current default output device so macOS routes
-        # audio to whichever device (speakers / headphones) is active now.
-        self._audio = QAudioOutput(QMediaDevices.defaultAudioOutput(), self)
-        self._audio.setVolume(self._volume)
-        self._media.setAudioOutput(self._audio)
+        self._audio   : QAudioOutput | None = None  # created lazily on first play
 
         # Queue state
         self._queue         : list[dict] = []
@@ -46,7 +41,9 @@ class Player(QObject):
         self._repeat        : str        = self.REPEAT_NONE
         self._autoplay      : bool       = False  # play as soon as media is loaded
 
-        # Watch for headphone plug/unplug and re-route to the new default device
+        # Watch for headphone plug/unplug and re-route to the new default device.
+        # We initialise QMediaDevices here (no media access) so the signal is
+        # connected from the start, but we don't create the audio output yet.
         self._media_devices = QMediaDevices(self)
         self._media_devices.audioOutputsChanged.connect(self._on_audio_devices_changed)
 
@@ -59,6 +56,19 @@ class Player(QObject):
         self._media.playbackStateChanged.connect(self._on_playback_state)
         self._media.mediaStatusChanged.connect(self._on_media_status)
         self._media.errorOccurred.connect(self._on_error)
+
+    def _ensure_audio_output(self) -> None:
+        """Create QAudioOutput on first use.
+
+        Deferring this avoids macOS prompting for media/file access permissions
+        at startup — the dialog now appears only when the user first plays
+        something, and macOS then remembers the decision for future launches.
+        """
+        if self._audio is not None:
+            return
+        self._audio = QAudioOutput(QMediaDevices.defaultAudioOutput(), self)
+        self._audio.setVolume(self._volume)
+        self._media.setAudioOutput(self._audio)
 
     # ------------------------------------------------------------------
     # Queue management
@@ -114,6 +124,7 @@ class Player(QObject):
 
     @Slot()
     def play(self) -> None:
+        self._ensure_audio_output()
         self._media.play()
 
     @Slot()
@@ -122,6 +133,7 @@ class Player(QObject):
 
     @Slot()
     def toggle_play_pause(self) -> None:
+        self._ensure_audio_output()
         if self._media.playbackState() == QMediaPlayer.PlaybackState.PlayingState:
             self._media.pause()
         else:
@@ -186,7 +198,8 @@ class Player(QObject):
     def set_volume(self, volume: float) -> None:
         """Set volume in range 0.0–1.0."""
         self._volume = max(0.0, min(1.0, volume))
-        self._audio.setVolume(self._volume)
+        if self._audio is not None:
+            self._audio.setVolume(self._volume)
 
     def volume(self) -> float:
         return self._volume
@@ -248,10 +261,13 @@ class Player(QObject):
     @Slot(QMediaPlayer.MediaStatus)
     def _on_media_status(self, status: QMediaPlayer.MediaStatus) -> None:
         MS = QMediaPlayer.MediaStatus
-        if status == MS.LoadedMedia:
-            # Media is buffered and ready — safe to call play() now
+        # Some Qt backends (e.g. macOS AVFoundation, Windows DirectShow) jump
+        # straight from LoadingMedia to BufferedMedia for local files, skipping
+        # LoadedMedia.  Handle both so _autoplay fires reliably.
+        if status in (MS.LoadedMedia, MS.BufferedMedia):
             if self._autoplay:
                 self._autoplay = False
+                self._ensure_audio_output()
                 self._media.play()
         elif status == MS.EndOfMedia:
             self.next_track()
@@ -273,8 +289,8 @@ class Player(QObject):
         new_audio = QAudioOutput(new_device, self)
         new_audio.setVolume(self._volume)
         self._media.setAudioOutput(new_audio)
-        # Allow old output to be cleaned up
-        self._audio.deleteLater()
+        if self._audio is not None:
+            self._audio.deleteLater()
         self._audio = new_audio
 
     def _on_error(self, error, error_string: str) -> None:
